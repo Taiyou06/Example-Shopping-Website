@@ -9,15 +9,15 @@ const app = express();
 const PORT = 3000;
 const USERS_FILE = path.join(__dirname, 'users.json');
 
-// In-memory storage for cart items
-const carts = {}; // key: userId, value: array of cart items
+// Sepet öğeleri için bellek içi depolama
+const carts = {}; // key: userId, value: alışveriş sepeti öğeleri dizisi
 
 app.use(express.static(path.join(__dirname, 'static')));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Set up session management
+// Oturum yönetimini ayarlama
 app.use(session({
-    secret: 'your_secret_key', // Change this to a real secret key
+    secret: 'your_secret_key', // Bunu gerçek bir gizli anahtarla değiştirin
     resave: false,
     saveUninitialized: false
 }));
@@ -25,7 +25,7 @@ app.use(session({
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// Middleware to check if user is logged in
+// Kullanıcının oturum açıp açmadığını kontrol etmek için ara yazılım
 function isAuthenticated(req, res, next) {
     if (req.session.user) {
         return next();
@@ -34,53 +34,53 @@ function isAuthenticated(req, res, next) {
     }
 }
 
-// Show cart page
+// Sepet sayfasını göster
 app.get('/cart', isAuthenticated, (req, res) => {
-    const userId = req.session.user.username; // Assuming session stores user object
+    const userId = req.session.user.username; // Oturumun kullanıcı nesnesini sakladığını varsayarsak
     
-    // Retrieve cart items from in-memory storage
+    // Bellek içi depolama alanından alışveriş sepeti öğelerini alma
     const cartItems = carts[userId] || [];
 
-    // Pass cart items to the EJS template
+    // Sepet öğelerini EJS şablonuna aktarma
     res.render('cart', { cartItems: cartItems, user: req.session.user });
 });
 
-// Add to cart endpoint
+// Sepete ekle uç noktası
 app.post('/cart/add', isAuthenticated, (req, res) => {
     const { productId } = req.body;
-    const userId = req.session.user.username; // Assuming session stores user object
+    const userId = req.session.user.username; // Oturumun kullanıcı nesnesini sakladığını varsayarsak
     
     if (!carts[userId]) {
         carts[userId] = [];
     }
 
-    // Add productId to user's cart
+    // Kullanıcının sepetine productId ekleyin
     carts[userId].push({ productId });
     res.json({ success: true });
 });
 
-// Clear cart endpoint
+// Sepet uç noktasını temizle
 app.post('/cart/clear', isAuthenticated, (req, res) => {
-    const userId = req.session.user.username; // Assuming session stores user object
+    const userId = req.session.user.username; // Oturumun kullanıcı nesnesini sakladığını varsayarsak
     
-    // Clear the user's cart
+    // Kullanıcının sepetini temizleyin
     carts[userId] = [];
     res.json({ success: true });
 });
 
-// Checkout endpoint
+// Ödeme uç noktası
 app.post('/cart/checkout', isAuthenticated, (req, res) => {
-    const userId = req.session.user.username; // Assuming session stores user object
+    const userId = req.session.user.username; // Oturumun kullanıcı nesnesini sakladığını varsayarsak
     
-    // Retrieve and clear cart items
+    // Sepet öğelerini geri alma ve temizleme
     const cartItems = carts[userId] || [];
-    carts[userId] = []; // Clear cart after checkout
+    carts[userId] = []; // Ödeme yaptıktan sonra sepeti temizle
 
-    // Process the checkout here (e.g., save order details)
+    // Ödeme işlemini burada gerçekleştirin (örneğin, sipariş ayrıntılarını kaydedin)
     res.json({ success: true });
 });
 
-// Define products for categories
+// Kategoriler için ürün tanımlama
 const categoryProducts = {
     electronics: [
         { id: 1, name: 'iPhone 14', price: 19999.99, image: '/images/electronics1.jpg' },
@@ -96,10 +96,10 @@ const categoryProducts = {
     ]
 };
 
-// Serve static files from the "public" directory
+// Statik dosyaları “public” dizininden sunun
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Home route
+// Ana sayfa rotası
 app.get('/', (req, res) => {
     const allProducts = [
         ...categoryProducts.electronics,
@@ -110,14 +110,14 @@ app.get('/', (req, res) => {
     res.render('index', { user: req.session.user, products: productsToDisplay });
 });
 
-// Category route
+// Kategori rotası
 app.get('/category/:category', (req, res) => {
     const category = req.params.category;
     const products = categoryProducts[category] || [];
     res.render('index', { user: req.session.user, products });
 });
 
-// Render pages
+// Sayfa oluştur
 app.get('/register', (req, res) => {
     res.render('register', { user: req.session.user });
 });
@@ -126,7 +126,7 @@ app.get('/login', (req, res) => {
     res.render('login', { user: req.session.user });
 });
 
-// Handle user registration
+// Kullanıcı kaydını işleme
 app.post('/register', async (req, res) => {
     const { username, email, password } = req.body;
     
@@ -146,7 +146,7 @@ app.post('/register', async (req, res) => {
     res.redirect('/login');
 });
 
-// Handle user login
+// Kullanıcı girişini yönetme
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
@@ -165,7 +165,7 @@ app.post('/login', async (req, res) => {
     res.redirect('/');
 });
 
-// Handle user logout
+// Kullanıcı oturumunu kapatma
 app.get('/logout', (req, res) => {
     req.session.destroy(err => {
         if (err) {
