@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+    <title>Kaan'ın Alışverşi Sitesi</title>
+    
+</head>
+<body>
+    <nav>
+        <a href="/">Ana Sayfa</a>
+        <div class="dropdown">
+            <button class="dropbtn">Kategoriler</button>
+            <div class="dropdown-content">
+                <a href="/category/electronics">Elektronik</a>
+                <a href="/category/food">Yemek</a>
+                <a href="/category/health">Sağlık</a>
+            </div>
+        </div>
+        <a href="/cart">Sepet</a>
+        <% if (!user) { %>
+            <a href="/register">Kayıt ol</a>
+            <a href="/login">Giriş</a>
+        <% } else { %>
+            <a href="/logout">Çıkış yap</a>
+        <% } %>
+    </nav>
+
+    <header>
+        <h1>Kaan'ın Marketi</h1>
+        <p>Her şey için tek adresiniz</p>
+    </header>
+
+    <section class="products">
+        <% products.forEach(product => { %>
+            <div class="product-card">
+                <img src="<%= product.image %>" alt="<%= product.name %>">
+                <h2><%= product.name %></h2>
+                <p>Fiyat: <%= product.price %>TL</p>
+                <button onclick="addToCart(<%= product.id %>)">Sepete Ekle</button>
+            </div>
+        <% }) %>
+    </section>
+    <script>
+        window.products = <%- JSON.stringify(products) %>;
+    </script>    
+    <script src="/js/app.js"></script>
+</body>
+</html>

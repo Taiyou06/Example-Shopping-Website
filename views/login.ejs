@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+    <title>Login</title>
+</head>
+<body>
+    <nav>
+        <a href="/">Ana Sayfa</a>
+        <a href="/cart">Sepet</a>
+        <% if (!user) { %>
+            <a href="/register">Kayıt ol</a>
+            <a href="/login">Giriş</a>
+        <% } else { %>
+            <a href="/logout">Çıkış yap</a>
+        <% } %>
+    </nav>
+
+    <div class="form-container">
+        <h2>Giriş</h2>
+        <form action="/login" method="POST">
+            <input type="text" name="kullanıcı adı" placeholder="Kullanıcı Adı" required>
+            <input type="password" name="şifre" placeholder="Şifre" required>
+            <button type="submit">Giriş</button>
+        </form>
+        <p>Hesabınız yok mu? <a href="/register">Buradan kayıt olun</a>.</p>
+    </div>
+</body>
+</html>

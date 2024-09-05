@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Order Confirmation</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Home</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item"><a class="nav-link" href="/category/electronics">Elektronik</a></li>
+                <li class="nav-item"><a class="nav-link" href="/category/food">Yemek</a></li>
+                <li class="nav-item"><a class="nav-link" href="/category/health">Sağlık</a></li>
+                <li class="nav-item"><a class="nav-link" href="/cart">Sepet</a></li>
+                <% if (!user) { %>
+                    <li class="nav-item"><a class="nav-link" href="/register">Kayıt ol</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/login">Giriş</a></li>
+                <% } else { %>
+                    <li class="nav-item"><a class="nav-link" href="/logout">Çıkış</a></li>
+                <% } %>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h2>Siparişiniz İçin Teşekkür Ederiz!</h2>
+        <p>Siparişiniz başarıyla verildi. Kısa süre içinde işleme alacağız.</p>
+        <a href="/" class="btn btn-primary">Ana Sayfaya geri dön</a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

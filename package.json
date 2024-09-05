@@ -1,0 +1,18 @@
+{
+  "name": "shopping-site",
+  "version": "1.0.0",
+  "description": "A simple shopping website with dynamic cart and user registration.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Kaan Dindar",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0"
+  }
+}
