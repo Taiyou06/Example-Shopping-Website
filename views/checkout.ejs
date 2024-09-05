@@ -4,57 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/styles.css">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <title>Checkout</title>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/">Home</a>
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item"><a class="nav-link" href="/category/electronics">Electronics</a></li>
-                <li class="nav-item"><a class="nav-link" href="/category/food">Food</a></li>
-                <li class="nav-item"><a class="nav-link" href="/category/health">Health</a></li>
-                <li class="nav-item"><a class="nav-link" href="/cart">Cart</a></li>
-                <% if (!user) { %>
-                    <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
-                <% } else { %>
-                    <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
-                <% } %>
-            </ul>
-        </div>
+    <nav>
+        <a href="/">Ana Sayfa</a>
+        <a href="/cart">Sepet</a>
+        <% if (!user) { %>
+            <a href="/register">Kayıt ol</a>
+            <a href="/login">Giriş</a>
+        <% } else { %>
+            <a href="/logout">Çıkış yap</a>
+        <% } %>
     </nav>
 
-    <div class="container mt-5">
-        <h2>Checkout</h2>
-        <form action="/checkout" method="POST">
+    <h1>Checkout</h1>
+    <div class="form-container">
+        <form id="checkout-form">
             <div class="form-group">
-                <label for="address">Address</label>
-                <input type="text" class="form-control" id="address" name="address" placeholder="Enter your address" required>
+                <label for="address">Adres</label>
+                <input type="text" id="address" name="address" required>
             </div>
-
             <div class="form-group">
-                <label for="credit-card">Credit Card Number</label>
-                <input type="text" class="form-control" id="credit-card" name="credit-card" placeholder="Enter your credit card number" required>
+                <label for="creditCard">Kredi kartı numarası</label>
+                <input type="text" id="creditCard" name="creditCard" required>
             </div>
-
             <div class="form-group">
-                <label for="expiry-date">Expiry Date</label>
-                <input type="text" class="form-control" id="expiry-date" name="expiry-date" placeholder="MM/YY" required>
+                <label for="expiryDate">Son Kullanma Tarihi (MM/YY)</label>
+                <input type="text" id="expiryDate" name="expiryDate" required>
             </div>
-
             <div class="form-group">
                 <label for="cvv">CVV</label>
-                <input type="text" class="form-control" id="cvv" name="cvv" placeholder="Enter CVV" required>
+                <input type="text" id="cvv" name="cvv" required>
             </div>
-
-            <button type="submit" class="btn btn-primary">Place Order</button>
+            <button type="submit">Submit</button>
         </form>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('checkout-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            fetch('/checkout', {
+                method: 'POST',
+                body: new URLSearchParams(formData),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Ödeme başarılı!');
+                    window.location.href = '/checkout'; // Ödeme sayfasına yönlendirme
+                } else {
+                    alert('Ödeme başarısız oldu. Lütfen tekrar deneyin.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Ödeme sırasında bir hata oluştu.');
+            });
+        });
+    </script>
 </body>
 </html>

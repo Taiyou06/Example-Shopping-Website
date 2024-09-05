@@ -323,3 +323,16 @@ h2 {
     background-color: #0056b3;
     border-color: #004085;
 }
+
+.sort-container {
+    text-align: center;
+    margin: 20px;
+}
+
+.sort-container select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    background-color: white;
+    font-size: 1em;
+}

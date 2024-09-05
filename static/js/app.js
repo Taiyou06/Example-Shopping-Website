@@ -39,32 +39,25 @@ function addToCart(productId) {
     }
 }
 
-// Ödeme sayfasını oluştur
+// Ödeme sayfasını oluşturmak için rota
 app.get('/checkout', isAuthenticated, (req, res) => {
     res.render('checkout', { user: req.session.user });
 });
 
-// Ödeme formu gönderimini işleme
+// Ödeme formu gönderimini işlemek için rota
 app.post('/checkout', isAuthenticated, (req, res) => {
-    const userId = req.session.user.username; // Oturumun kullanıcı nesnesini sakladığını varsayarsak
+    const userId = req.session.user.username; // Assuming session stores user object
     const { address, creditCard, expiryDate, cvv } = req.body;
 
-    // Ödeme ayrıntılarını doğrula ve işle
+    // Validate and process payment details
     if (!address || !creditCard || !expiryDate || !cvv) {
-        console.log('Missing required fields');
-        return res.status(400).json({ success: false, message: 'All fields are required' });
+        return res.status(400).send('All fields are required');
     }
 
-    try {
-        // Ödeme yapıldıktan sonra kullanıcının sepetini temizle
-        carts[userId] = [];
+    // Gerçek uygulamalar için, ödemeyi işleyin ve sipariş ayrıntılarını burada bir veritabanına kaydedin
+    // Şimdilik sadece sepeti temizleyip bir başarı yanıtı gönder
+    carts[userId] = []; // Ödeme yaptıktan sonra sepeti temizle
 
-        // Başarılı olursa, başarı yanıtını gönder
-        res.json({ success: true });
-    } catch (error) {
-        console.error('Error during checkout:', error);
-        res.status(500).json({ success: false, message: 'An error occurred during checkout' });
-    }
+    // Bir onay sayfasına veya ana sayfaya yönlendirme
+    res.redirect('/checkout'); // Ödeme sayfasına yönlendirme
 });
-
-

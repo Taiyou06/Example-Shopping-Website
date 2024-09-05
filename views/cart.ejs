@@ -20,6 +20,14 @@
 
     <h1 class="cart-title">Sepetiniz</h1>
 
+    <div class="sort-container">
+        <label for="sort">Sort by:</label>
+        <select id="sort" onchange="sortCart()">
+            <option value="priciest">En Pahalıdan En Ucuza</option>
+            <option value="cheapest">En Ucuzdan En Pahalıya</option>
+        </select>
+    </div>
+
     <div id="cart-items">
         <!-- Sepet öğeleri dinamik olarak buraya yüklenecektir -->
     </div>
@@ -36,8 +44,8 @@
         </ul>
 
         <div class="cart-buttons-container">
-            <button onclick="clearCart()" class="cart-btn">Clear Cart</button>
-            <button onclick="checkout()" class="cart-btn">Checkout</button>
+            <button onclick="clearCart()" class="cart-btn">Sepeti Temizle</button>
+            <button onclick="checkout()" class="cart-btn">Ödeme</button>
         </div>
     </main>
 
